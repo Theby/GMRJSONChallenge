@@ -1,44 +1,47 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PanelView : MonoBehaviour
+namespace GMRJSONChallenge
 {
-	[Header("Elements")]
-	[SerializeField] private Text panelTitle;
-	[SerializeField] private GameObject contentRoot;
-
-	[Header("Prefabs")]
-	[SerializeField] private GameObject columnPrefab;
-	[SerializeField] private Text columnTitlePrefab;
-	[SerializeField] private Text columnContentPrefab;
-
-	public void CleanPanel()
+	public class PanelView : MonoBehaviour
 	{
-		panelTitle.text = string.Empty;
+		[Header("Elements")]
+		[SerializeField] private Text panelTitle;
+		[SerializeField] private GameObject contentRoot;
 
-		foreach (Transform childTransform in contentRoot.transform)
+		[Header("Prefabs")]
+		[SerializeField] private GameObject columnPrefab;
+		[SerializeField] private Text columnTitlePrefab;
+		[SerializeField] private Text columnContentPrefab;
+
+		public void CleanPanel()
 		{
-			Destroy(childTransform.gameObject);
-		}
-	}
+			panelTitle.text = string.Empty;
 
-	public void UpdatePanelContent(PanelData panelData)
-	{
-		CleanPanel();
-
-		panelTitle.text = panelData.Title;
-
-		foreach (var panelDataColumnHeader in panelData.ColumnHeaders)
-		{
-			var column = Instantiate(columnPrefab, contentRoot.transform, false);
-
-			var columnTitle = Instantiate(columnTitlePrefab, column.transform, false);
-			columnTitle.text = panelDataColumnHeader;
-
-			foreach (var contentData in panelData.ContentsData)
+			foreach (Transform childTransform in contentRoot.transform)
 			{
-				var columnContent = Instantiate(columnContentPrefab, column.transform, false);
-				columnContent.text = contentData[panelDataColumnHeader];
+				Destroy(childTransform.gameObject);
+			}
+		}
+
+		public void UpdatePanelContent(PanelData panelData)
+		{
+			CleanPanel();
+
+			panelTitle.text = panelData.Title;
+
+			foreach (var panelDataColumnHeader in panelData.ColumnHeaders)
+			{
+				var column = Instantiate(columnPrefab, contentRoot.transform, false);
+
+				var columnTitle = Instantiate(columnTitlePrefab, column.transform, false);
+				columnTitle.text = panelDataColumnHeader;
+
+				foreach (var contentData in panelData.ContentsData)
+				{
+					var columnContent = Instantiate(columnContentPrefab, column.transform, false);
+					columnContent.text = contentData[panelDataColumnHeader];
+				}
 			}
 		}
 	}
